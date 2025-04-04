@@ -1,12 +1,18 @@
+import AppWalletProvider from "@/component/AppWalletProvider";
+import Main from "@/component/main/main";
+import '@solana/wallet-adapter-react-ui/styles.css';
 
-export default function Home() {
+export default function Home({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-
-      <p className="text-lg">This is a sample paragraph.</p>
-    </div>
+    <>
+      <AppWalletProvider>
+        <Main />
+        {children}
+      </AppWalletProvider>
+    </>
   );
 }
