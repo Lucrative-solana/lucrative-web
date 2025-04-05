@@ -45,14 +45,18 @@ export default function Admin_DevPage() {
 
         if (confirmWithdraw) {
             alert('송금을 진행합니다!');
-            await fetch('/api/dev/withdraw', {
+            await fetch('/api/dev/widhdraw', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    address: widhrawAddress,
-                    amount: widhrawAmount,
+                    buyer: publicKey?.toString(),
+                    seller: widhrawAddress,
+                    amountInSol: widhrawAmount,
+                    itemName: "Test crabfood",
+                    itemId: "1",
+                    itemDescription: "Test"
                 }),
             })
             .then((response) => {
@@ -86,7 +90,7 @@ export default function Admin_DevPage() {
                     <div className="widhraw-box">
                         <h1>송금 테스트</h1>
                         <div>
-                            송금 주소
+                            셀러 주소
                         </div>
                         <div className="widhraw-input-box">
                             <input id="address-input" placeholder="Recipient Address" onChange={onChangeAddress} />
@@ -99,7 +103,7 @@ export default function Admin_DevPage() {
                         </div>
                         <div className="widhraw-button-box">
                             <div className="widhraw-button" onClick={onSubmit}>
-                                송금 테스트
+                                셀러 테스트
                             </div>
                         </div>
                         </div>
