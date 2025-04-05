@@ -29,7 +29,7 @@ export default function Main_Header() {
                                 <div className={'text-'}>홈</div>
                             </div>
                             <div className={'a-2'}>
-                                <div className={'text--1'}>상품</div>
+                                <div className={'text--1'} onClick={() => window.location.href = '/search'}>상품</div>
                             </div>
                             <div className={'a-3'} onClick={() => window.location.href = '/settings'} >
                                 <div className={'text--2'}>마이페이지</div>

@@ -19,8 +19,6 @@ export default function Settings_Content({ content }: AdminContentProps) {
         setWalletStatus(true);
     }
     console.log(walletstatus, wallet);
-
-
     let contentToRender;
 
     if (!publicKey) {
@@ -44,24 +42,24 @@ export default function Settings_Content({ content }: AdminContentProps) {
                 contentToRender = <Management_MyItem />;
                 break;
             case 2:
-                contentToRender = <h1>Order Management</h1>;
+                contentToRender = <div>Order Management</div>;
                 break;
             case 3:
-                contentToRender = <h1>Token Analyze</h1>;
+                contentToRender = <div>Token Analyze</div>;
                 break;
             default:
-                contentToRender = <h1>Dashboard Cotent</h1>;
+                contentToRender = <div>Dashboard Cotent</div>;
                 break;
         }
     }
 
     return (
-        <>
+        <div>
             <div className="admin-content">
                 <div className="content-1">
                     {contentToRender}
                 </div>
             </div>
-        </>
+        </div>
     )
 }

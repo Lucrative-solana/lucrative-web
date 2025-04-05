@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
       {
         source: "/api/get-all-items",
         destination: "http://localhost:4000/search/allitem",
+      },
+      {
+        source : "/api/search/item-by-id/:id",
+        destination : "http://localhost:4000/search/item-by-id?id=:id"
       }
     ]
   }

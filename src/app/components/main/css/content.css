@@ -1,7 +1,7 @@
 .landing-content-wrapper {
     width: 100%;
     /* flex: 1; */ /* <<< 만약 부모 레이아웃(헤더+컨텐츠)이 display:flex, flex-direction:column 이라면, 이 속성으로 남은 세로 공간을 채웁니다. */
-    min-height: calc(100vh - var(--header-height, 65px)); /* <<< 헤더 높이를 제외한 최소 뷰포트 높이 (헤더 높이 변수 필요) */
+    /* min-height: calc(100vh - var(--header-height, 65px)); /* <<< 헤더 높이를 제외한 최소 뷰포트 높이 (헤더 높이 변수 필요) */
     display: flex; /* 내부 landing-content를 정렬하기 위해 flex 사용 */
     flex-direction: column; /* 자식 요소를 세로로 쌓음 (여기선 하나지만) */
     align-items: center; /* <<< 자식 요소(landing-content)를 수평 중앙 정렬 */

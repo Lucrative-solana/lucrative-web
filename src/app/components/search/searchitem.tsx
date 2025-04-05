@@ -48,10 +48,6 @@ const ItemCard: React.FC<{ item: Item }> = ({ item }) => {
             <div className="item-card__content">
                 <h3 className="item-card__name">{item.name}</h3>
                 <div className="item-card__price-section">
-                     {/* 할인율 표시 (텍스트 형태) - 디자인과 약간 다름 */}
-                     {/* {item.discountRate && item.discountRate > 0 && (
-                        <span className="item-card__discount-rate">{item.discountRate}%</span>
-                     )} */}
                     <span className="item-card__discounted-price">
                         {formatPrice(discountedPrice)}원
                     </span>
@@ -62,8 +58,6 @@ const ItemCard: React.FC<{ item: Item }> = ({ item }) => {
                         </span>
                     )}
                 </div>
-                 {/* 필요하다면 설명이나 재고 등 추가 */}
-                 {/* <p className="item-card__description">{item.description}</p> */}
             </div>
         </Link>
     );
