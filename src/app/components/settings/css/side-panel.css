@@ -1,0 +1,167 @@
+.aside {
+    display: flex;
+    position: relative; /* Changed from fixed to relative as often sidebars are relative to a main container */
+    flex-direction: column;
+    width: 256px;
+    height: 100%; 
+    background: #FFFFFF;
+    border-right: 1px solid #E5E7EB; 
+    box-sizing: border-box; /* Good practice */
+}
+
+.aside .div {
+    /* position: relative; */ /* Often not needed */
+    /* top: 0px; */
+    /* left: 0px; */
+    width: 100%; /* Take full width of aside */
+    /* height: 100%; */ /* This seemed incorrect, should likely be auto or fixed */
+    height: auto; /* Changed: let it size by content */
+    display: flex;
+    justify-content: center; /* Center the logo container */
+    align-items: center; /* Center the logo container */
+    /* flex-wrap: wrap; */ /* Not needed for a single logo usually */
+    /* row-gap: 10px; */
+    /* column-gap: 10px; */
+    /* background: white; */ /* Inherited from .aside */
+    padding-top: 20px; /* Use padding instead of margin on LOGO for container spacing */
+    padding-bottom: 20px; /* Add some bottom space */
+    box-sizing: border-box;
+}
+
+/* Logo styling */
+.aside .LOGO {
+    /* position: relative; */ /* Not needed if centered in .div */
+    /* width: 255px; */ /* Let width be auto based on text */
+    width: 256px;
+    height: 32px; /* Keep height for vertical alignment */
+    margin: 10px;
+    display: flex; /* Keep flex for potential icon + text */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* flex-wrap: wrap; */ /* Not usually needed for short text */
+    /* margin-top: 20px; */ /* Moved to padding on parent .div */
+    color: var(--color-violet-400); /* Ensure this CSS variable is defined elsewhere */
+    font-size: 32px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+/* Navigation container */
+.aside .nav {
+    /* position: relative; */ /* Remove relative positioning causing overlap issues */
+    /* top: 104px; */ /* Remove fixed offset */
+    /* left: 0px; */
+    width: 100%; /* Take full width */
+    /* height: 100%; */ /* Should grow with content or be scrollable */
+    height: auto; /* Changed: let it size by content */
+    /* background: rgba(0, 0, 0, 0); */ /* No background needed */
+    /* cursor: pointer; */ /* Remove cursor from container, apply to items */
+    display: flex; /* Use flexbox to stack nav items */
+    flex-direction: column; /* Stack items vertically */
+    padding: 0; /* Remove default padding if any */
+    margin: 0; /* Remove default margin if any */
+    margin-top: 20px;
+}
+
+/* Common styles for all navigation links (a, a-1, a-2, a-3) */
+.aside .nav .a,
+.aside .nav .a-1,
+.aside .nav .a-2,
+.aside .nav .a-3,
+.aside .nav .a-4 {
+    /* position: relative; */ /* Remove relative positioning */
+    /* top: ... */ /* Remove fixed offsets */
+    /* left: 0px; */
+    width: 100%; /* Full width */
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    /* flex-wrap: wrap; */ /* Not needed */
+    /* row-gap: 0px; */
+    padding: 12px 24px; /* Simplified padding */
+    box-sizing: border-box; /* Important */
+    cursor: pointer; /* Apply cursor here */
+    text-decoration: none; /* Remove underline if these were actual <a> tags */
+    transition: background-color 0.2s ease, color 0.2s ease; /* Smooth transitions */
+}
+
+/* Common styles for the inner span (text container) */
+.aside .nav .a .span,
+.aside .nav .a-1 .span-1,
+.aside .nav .a-2 .span-2,
+.aside .nav .a-3 .span-3,
+.aside .nav .a-4 .span-4 {
+    /* position: relative; */ /* Remove positioning */
+    /* top: 12px; */
+    /* left: 56px; */ /* Control positioning via parent padding/flexbox */
+    /* width: ... */ /* Let width be auto */
+    width: auto;
+    height: 24px; /* Match line-height */
+    /* background: rgba(0, 0, 0, 0); */
+    margin-left: 12px; /* Add space if an icon was intended before the text */
+                    /* Adjust if you have actual icons */
+}
+
+/* Common styles for the text elements */
+.aside .nav .a .span .text-,
+.aside .nav .a-1 .span-1 .text--,
+.aside .nav .a-2 .span-2 .text---1,
+.aside .nav .a-3 .span-3 .text---2,
+.aside .nav .a-4 .span-4 .text---3 {
+    /* position: relative; */ /* Remove positioning */
+    /* top: 0px; */
+    /* left: 0px; */
+    /* width: ... */ /* Let width be auto */
+    width: auto;
+    height: 24px;
+    white-space: nowrap;
+    color: #4B5563; /* Default text color */
+    font-family: "Roboto", sans-serif; /* Add fallback font */
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+/* Hover state for all navigation links */
+.aside .nav .a:hover,
+.aside .nav .a-1:hover,
+.aside .nav .a-2:hover,
+.aside .nav .a-3:hover,
+.aside .nav .a-4:hover {
+    background: #f0f0f0; /* Gray background on hover */
+}
+
+/* Selected state for all navigation links */
+.aside .nav .a.selected,
+.aside .nav .a-1.selected,
+.aside .nav .a-2.selected,
+.aside .nav .a-3.selected,
+.aside .nav .a-4.selected {
+    background: black; /* Black background for selected */
+}
+
+/* Text color for selected state */
+.aside .nav .a.selected .span .text-,
+.aside .nav .a-1.selected .span-1 .text--,
+.aside .nav .a-2.selected .span-2 .text---1,
+.aside .nav .a-3.selected .span-3 .text---2,
+.aside .nav .a-4.selected .span-4 .text---3 {
+    color: white; /* White text color for selected */
+}
+
+/* If you had icons (like the commented out .i classes), you would style them here */
+/* Example:
+.aside .nav .a .i,
+.aside .nav .a-1 .i-1,
+.aside .nav .a-2 .i-2,
+.aside .nav .a-3 .i-3 {
+    width: 20px;
+    height: 16px;
+     Should use background-image, mask-image, or an icon font
+    margin-right: 12px; /* Space between icon and text container * /
+}
+*/

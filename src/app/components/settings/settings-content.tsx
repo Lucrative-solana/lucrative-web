@@ -1,17 +1,18 @@
 'use client'
-import './css/admin_content.css'
-import Admin_DevPage from './admin-content/devpage';
+import './css/settings_content.css'
+import DashBoard from './settings-content/dashboard';
+import Admin_DevPage from './settings-content/devpage';
 
 interface AdminContentProps {
     content: number;
 }
 
-export default function Admin_Content({ content }: AdminContentProps) {
+export default function Settings_Content({ content }: AdminContentProps) {
     let contentToRender;
 
     switch (content) {
         case 0:
-            contentToRender = <h1>Dashboard Cotent</h1>;
+            contentToRender = <DashBoard />;
             break;
         case 1:
             contentToRender = <h1>Product Management</h1>;
@@ -22,15 +23,11 @@ export default function Admin_Content({ content }: AdminContentProps) {
         case 3:
             contentToRender = <h1>Token Analyze</h1>;
             break;
-        case 4:
-            contentToRender = <Admin_DevPage />;
-            break;
         default:
             contentToRender = <h1>Dashboard Cotent</h1>;
             break;
     }
         
-
     return (
         <>
             <div className="admin-content">
