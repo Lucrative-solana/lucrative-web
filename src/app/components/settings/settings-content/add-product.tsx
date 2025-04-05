@@ -283,7 +283,7 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
                                     placeholder="0"
                                     min="0" // 최소값
                                     value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
+                                    onChange={(e) => setPrice(Number(e.target.value))}
                                     required
                                 />
                             </div>
@@ -300,7 +300,7 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
                                 placeholder="재고 수량 입력"
                                 min="0"
                                 value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
+                                onChange={(e) => setQuantity(Number(e.target.value))}
                                 required
                             />
                         </div>
@@ -331,7 +331,7 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
                                         } else if (value < 0) {
                                             setTokenDiscount(0);
                                         } else {
-                                            setTokenDiscount(e.target.value);
+                                            setTokenDiscount(Number(e.target.value));
                                         }
                                     }}
                                 />
