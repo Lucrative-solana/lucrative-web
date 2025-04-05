@@ -34,7 +34,7 @@ export default function Settings_Header({ content }: AdminContentProps) {
     }, [content]); // useEffect의 종속성 배열에서 setPageOption 제거 가능 (React가 자동으로 처리)
 
     return (
-        <>
+        <div>
             <div className="admin-header-box">
                 <div className='page-option'>
                     {pageOption}
@@ -44,6 +44,6 @@ export default function Settings_Header({ content }: AdminContentProps) {
                     <WalletMultiButtonDynamic />
                 </div>
             </div>
-        </>
+        </div>
     );
 }

@@ -5,7 +5,7 @@
   --foreground: #171717;
 }
 
-html, body {
+html, body, div {
   height: 100%;
   margin: 0; /* body의 기본 마진 제거 */
   padding: 0; /* 기본 패딩 제거 */

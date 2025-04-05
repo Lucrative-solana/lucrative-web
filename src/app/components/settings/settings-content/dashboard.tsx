@@ -307,7 +307,7 @@ export default function DashBoard() {
 
 
     return (
-        <>
+        <div>
             {viewMode === 'dashboard' ? (
                 <div className='main'>
                     {/* 정보 박스 영역 */}
@@ -449,6 +449,6 @@ export default function DashBoard() {
             ) : (
                 <ProductRegistrationForm onBack={showDashboard} />
             )}
-        </>
+        </div>
     );
 }

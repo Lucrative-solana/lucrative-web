@@ -34,7 +34,7 @@ export default function SidePanel({ setContent }: SidePanelProps) {
     }, [setContent]);
 
     return (
-        <>
+        <div>
             <div className='aside'>
                 <div className='div' onClick={() => window.location.href = '/'}>
                     <div className='LOGO'>
@@ -72,6 +72,6 @@ export default function SidePanel({ setContent }: SidePanelProps) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }

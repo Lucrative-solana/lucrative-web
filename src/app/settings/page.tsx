@@ -8,11 +8,11 @@ export default function Admin() {
     const [content, setContent] = useState(0);
 
     return (
-        <>
+        <div>
             <div className="settings-main-box">
                 <SidePanel setContent={setContent} />
                 <Settings_Main setContent={setContent} content={content}/>
             </div>
-        </>
+        </div>
     )
 }
