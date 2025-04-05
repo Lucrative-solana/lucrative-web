@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Lucrative Web
 
-First, run the development server:
+Frontend for the Lucrative decentralized application (dApp) built using Next.js and React. This UI layer connects to the backend services and Solana blockchain, enabling interactive features through a modern and responsive dashboard.
+
+---
+
+## 📚 Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Scripts](#scripts)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+---
+
+## 🚀 Introduction
+
+Lucrative Web is a Next.js 15 project using React 19 and Tailwind CSS. It provides the user interface for interacting with Solana blockchain functionalities, such as token management, wallet connections, and visual dashboards using chart.js.
+
+---
+
+## ✨ Features
+
+- Next.js 15 with App Router
+- React 19
+- Tailwind CSS for modern UI
+- Solana wallet adapter integration (via browser extension)
+- Chart visualizations with Chart.js and React-ChartJS-2
+- Dashboard for monitoring or interacting with blockchain data
+- React Router DOM for enhanced navigation
+
+---
+
+## 🧩 Project Structure
+
+```
+lucrative-web/
+│
+├── public/              # Static assets
+├── src/                 # Source code and components
+├── .gitignore
+├── package.json
+├── next.config.ts       # Next.js configuration
+├── tsconfig.json        # TypeScript configuration
+├── tailwind.config.js   # Tailwind configuration (via postcss)
+```
+
+---
+
+## 🛠 Installation
+
+```bash
+# Clone the repository
+git clone <repo-url>
+cd lucrative-web
+
+# Install dependencies
+npm install
+```
+
+---
+
+## 🧪 Usage
+
+To start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Use the Chrome Solana wallet extension (e.g., Phantom) for testing blockchain interactions.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ⚙️ Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command        | Description                 |
+|----------------|-----------------------------|
+| `dev`          | Run development server      |
+| `build`        | Create production build     |
+| `start`        | Run production server       |
+| `lint`         | Run ESLint checks           |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Dependencies
 
-## Deploy on Vercel
+- **Framework**: `next`, `react`, `react-dom`
+- **Solana Wallets**: `@solana/wallet-adapter-*`, `@solana/web3.js`
+- **Charts**: `chart.js`, `react-chartjs-2`
+- **Routing**: `react-router-dom`
+- **Crypto**: `tweetnacl`, `bs58`
+- **Styling**: `tailwindcss`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🪪 License
+
+UNLICENSED – This project is currently proprietary and not licensed for distribution.
