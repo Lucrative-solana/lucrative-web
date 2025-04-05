@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
       {
         source: "/api/register/seller/item",
         destination: "http://localhost:4000/seller/items",
+      },
+      {
+        source: "/api/get-my-items",
+        destination: "http://localhost:4000/search/my-register-item",
       }
     ]
   }

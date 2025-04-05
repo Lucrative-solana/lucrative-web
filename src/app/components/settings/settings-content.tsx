@@ -4,6 +4,7 @@ import './css/settings_content.css'
 import DashBoard from './settings-content/dashboard';
 import { useState } from 'react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import Management_MyItem from './settings-content/management-myitem';
 
 interface AdminContentProps {
     content: number;
@@ -40,7 +41,7 @@ export default function Settings_Content({ content }: AdminContentProps) {
                 contentToRender = <DashBoard />;
                 break;
             case 1:
-                contentToRender = <h1>Product Management</h1>;
+                contentToRender = <Management_MyItem />;
                 break;
             case 2:
                 contentToRender = <h1>Order Management</h1>;

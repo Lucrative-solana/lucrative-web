@@ -1,0 +1,115 @@
+/* --- Management MyItem 전체 컨테이너 --- */
+.management-myitem {
+  padding: 2rem; /* 내부 여백 */
+  background-color: #ffffff; /* 배경색 (기본 흰색) */
+  border-radius: 8px; /* 모서리 둥글게 (선택 사항) */
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); */ /* 부드러운 그림자 (선택 사항) */
+  width: 100%; /* 사용 가능한 너비 채우기 */
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
+/* --- 제목 및 설명 스타일 --- */
+.management-myitem h1 {
+  font-size: 1.75rem; /* 28px */
+  font-weight: 600; /* 약간 굵게 */
+  color: #1f2937; /* 어두운 회색 */
+  margin: 0 0 0.5rem 0; /* 위쪽 마진 제거, 아래쪽 약간 */
+}
+
+.management-myitem p:first-of-type { /* 첫 번째 p 태그 (설명) */
+  font-size: 1rem; /* 16px */
+  color: #6b7280; /* 중간 회색 */
+  margin-bottom: 2rem; /* 테이블과의 간격 */
+}
+
+/* --- 테이블 스타일 --- */
+.management-myitem table {
+  width: 100%; /* 테이블 너비 100% */
+  border-collapse: collapse; /* 테두리 선 합치기 */
+  text-align: left; /* 기본 텍스트 왼쪽 정렬 */
+  font-size: 0.875rem; /* 14px - 테이블 기본 폰트 크기 */
+  color: #374151; /* 테이블 텍스트 색상 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* 테이블 그림자 (선택 사항) */
+  border-radius: 6px; /* 테이블 모서리 둥글게 (선택 사항) */
+  overflow: hidden; /* border-radius 적용 위해 */
+}
+
+/* --- 테이블 헤더 (thead, th) --- */
+.management-myitem thead {
+  background-color: #f9fafb; /* 헤더 배경색 (매우 연한 회색) */
+  border-bottom: 2px solid #e5e7eb; /* 헤더 아래 구분선 */
+}
+
+.management-myitem th {
+  padding: 12px 16px; /* 헤더 셀 내부 여백 */
+  font-weight: 600; /* 헤더 글씨 굵게 */
+  color: #374151; /* 헤더 텍스트 색상 */
+  text-transform: uppercase; /* 영문 대문자 (선택 사항) */
+  letter-spacing: 0.05em; /* 자간 약간 넓게 (선택 사항) */
+}
+
+/* --- 테이블 본문 (tbody, tr, td) --- */
+.management-myitem tbody tr {
+  border-bottom: 1px solid #f3f4f6; /* 행 사이 구분선 (더 연하게) */
+  transition: background-color 0.15s ease-in-out; /* 부드러운 호버 효과 */
+}
+
+.management-myitem tbody tr:last-child {
+  border-bottom: none; /* 마지막 행 아래 구분선 제거 */
+}
+
+.management-myitem tbody tr:nth-child(even) {
+  background-color: #f9fafb; /* 짝수 행 배경색 (지브라) */
+}
+
+.management-myitem tbody tr:hover {
+  background-color: #f3f4f6; /* 마우스 호버 시 배경색 */
+}
+
+.management-myitem td {
+  padding: 12px 16px; /* 데이터 셀 내부 여백 */
+  vertical-align: middle; /* 셀 내용 수직 중앙 정렬 */
+  color: #4b5563;
+}
+
+/* 특정 컬럼 정렬 (예: 가격, 수량 오른쪽 정렬) */
+.management-myitem th:nth-child(3), /* 가격 헤더 */
+.management-myitem td:nth-child(3), /* 가격 데이터 */
+.management-myitem th:nth-child(4), /* 수량 헤더 */
+.management-myitem td:nth-child(4) { /* 수량 데이터 */
+  /* text-align: right; */ /* 오른쪽 정렬 필요시 주석 해제 */
+}
+
+/* --- '아이템 없음' 메시지 스타일 --- */
+.management-myitem > p:last-child { /* 컨테이너의 마지막 자식 p 요소 (테이블 없을 때) */
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af; /* 더 연한 회색 */
+  font-style: italic;
+  border: 1px dashed #e5e7eb; /* 점선 테두리 (선택 사항) */
+  border-radius: 6px;
+  margin-top: 1.5rem;
+}
+
+/* --- 반응형: 작은 화면에서 테이블 가로 스크롤 --- */
+@media (max-width: 768px) {
+  .management-myitem {
+    padding: 1rem; /* 작은 화면에서 패딩 줄이기 */
+  }
+
+  .management-myitem div:has(> table) { /* 테이블을 감싸는 div가 있다면 (없으면 table 자체) */
+      overflow-x: auto; /* 테이블 내용 넘칠 경우 가로 스크롤 생성 */
+      /* -webkit-overflow-scrolling: touch; */ /* iOS 부드러운 스크롤 */
+  }
+
+  .management-myitem table {
+    min-width: 600px; /* 테이블 최소 너비 지정 (스크롤 생길 기준) */
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+   .management-myitem th,
+   .management-myitem td {
+       white-space: nowrap; /* 셀 내용 줄바꿈 방지 */
+   }
+}
