@@ -2,6 +2,9 @@
 import React, { JSX, useCallback, useEffect, useState } from 'react';
 import './css/add-product.css'; // CSS 파일 경로
 import { useWallet } from '@solana/wallet-adapter-react';
+import bs58 from 'bs58';
+import nacl from 'tweetnacl';
+import { sign } from 'crypto';
 interface ProductRegistrationFormProps {
     onBack: () => void; // 대시보드로 돌아가기 함수
 }
@@ -32,7 +35,23 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
             imageFile,
         });
         // 여기서 API 호출 로직 구현
-        // 셀러 등록 
+        // 셀러 등록
+
+        if (!publicKey) {
+            alert('공개 키를 사용할 수 없습니다. 지갑을 연결해주세요.');
+            return;
+        }
+        const messageBytes = new TextEncoder().encode('리셀러 등록');
+        const signatureBytes = bs58.decode('3v1g7x2Z4k5n6z8v9y7u6t5r4e3d2c1b0a9f8g7h6i5j4k3l2m1n0o9p8q7r6s5t4u3v2w1x0y9z8a7b6c5d4e3f2g1h0i9j8k7l6m5n4o3p2q1r0s9t8u7v6w5x4y3z2a1b0c9d8e7f6g5h4i3j2k1l0m9n8o7p6q5r4s3t2u1v0w9x8y7z6a5b4c3d2e1f0g9h8i7j6k5l4m3n2o1p0q9r8s7t6u5v4w3x2y1z0a9b');
+        // Convert publicKey to Uint8Array using .toBytes()
+        const publicKeyBytes = publicKey.toBytes();
+        const isSignatureValid = nacl.sign.detached.verify(messageBytes, signatureBytes, publicKeyBytes);
+
+        if (!isSignatureValid) {
+            alert('서명 확인에 실패했습니다.');
+            return;
+        }
+        
         await fetch('/api/generate/seller-token', {
             method: 'POST',
             headers: {
@@ -40,6 +59,8 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
             },
             body: JSON.stringify({
                 walletAddress: sellerwallet,
+                message: '리셀러 등록',
+                signature: isSignatureValid
             }),
         }).then((response) => {
             console.log('Response:', response);
@@ -53,7 +74,10 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
             alert('셀러 등록 중 오류가 발생했습니다.');
         });
 
-
+    if (!publicKey) {
+        alert('공개 키를 사용할 수 없습니다. 지갑을 연결해주세요.');
+        return;
+    }
         await fetch('/api/register/seller/item',
             {
                 method: 'POST',
