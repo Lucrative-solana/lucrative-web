@@ -34,6 +34,7 @@
 }
 
 .wallet-not-connected-message {
+    position: fixed;
     font-size: 20px;
     font-weight: bold;
     color: #333;

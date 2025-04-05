@@ -27,10 +27,11 @@ export default function Settings_Content({ content }: AdminContentProps) {
             <div className="wallet-not-connected">
                 <div className="wallet-not-connected-message">
                     월렛 연결 후 서비스 이용 가능합니다.
+                    <div>
+                        <WalletMultiButton />
+                    </div>
                 </div>
-                <div>
-                    <WalletMultiButton />
-                </div>
+
             </div>
         );
     } else {

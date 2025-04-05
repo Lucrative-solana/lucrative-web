@@ -29,7 +29,9 @@ export default function RootLayout({
     <html lang="en" style={{ height: '100%' }}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        style={{ height: '100%' }}
+        style={{
+          height: '100%'
+         }}
       >
         <AppWalletProvider>
           {children}
