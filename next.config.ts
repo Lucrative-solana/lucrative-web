@@ -23,7 +23,11 @@ const nextConfig: NextConfig = {
       {
         source : "/api/search/item-by-id/:id",
         destination : "http://localhost:4000/search/item-by-id?id=:id"
-      }
+      },
+      {
+        source: "/api/generate/seller-token",
+        destination: "http://localhost:4000/seller/token/address"
+      },
     ]
   }
 };

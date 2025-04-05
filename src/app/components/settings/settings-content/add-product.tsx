@@ -32,11 +32,31 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
             imageFile,
         });
         // 여기서 API 호출 로직 구현
-        // 예: await registerProduct({ productName, ... });
+        // 셀러 등록 
+        await fetch('/api/generate/seller-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                walletAddress: sellerwallet,
+            }),
+        }).then((response) => {
+            console.log('Response:', response);
+            if (response.status === 201) {
+                alert('셀러 등록이 완료되었습니다.');
+            } else {
+                alert('셀러 등록에 실패했습니다.');
+            }
+        }).catch((error) => {
+            console.error('Error:', error);
+            alert('셀러 등록 중 오류가 발생했습니다.');
+        });
+
+
         await fetch('/api/register/seller/item',
             {
                 method: 'POST',
-
                 headers: {
                     'Content-Type': 'application/json',
                 },
