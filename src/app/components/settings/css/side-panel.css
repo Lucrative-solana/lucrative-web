@@ -4,6 +4,7 @@
     flex-direction: column;
     width: 256px;
     height: 100%; 
+    /* height: 100vh; */ /* This is often used for full height */
     background: #FFFFFF;
     border-right: 1px solid #E5E7EB; 
     box-sizing: border-box; /* Good practice */

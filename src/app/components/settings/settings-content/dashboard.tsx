@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import './css/dashboard.css' // CSS 파일 임포트 확인
 import { LAMPORTS_PER_SOL, VersionedTransactionResponse } from "@solana/web3.js";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
@@ -16,6 +16,7 @@ import {
     Filler // <<< Filler 임포트
 } from 'chart.js';
 import type { ChartOptions, ChartData, TooltipItem } from 'chart.js'; // <<< 타입 임포트
+import ProductRegistrationForm from './add-product';
 
 ChartJS.register( // ChartJS 사용
     CategoryScale,
@@ -49,6 +50,18 @@ export default function DashBoard() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
     const [ordersError, setOrdersError] = useState<string | null>(null);
+
+    const [viewMode, setViewMode] = useState<'dashboard' | 'register'>('dashboard'); // 현재 보여줄 뷰 상태
+
+    // --- 상품 등록 폼으로 전환하는 함수 ---
+    const showRegistrationForm = () => {
+        setViewMode('register');
+    };
+
+    // --- 대시보드로 돌아가는 함수 ---
+    const showDashboard = () => {
+        setViewMode('dashboard');
+    };
 
     interface Order {
     id: string | number; // 고유 ID
@@ -295,144 +308,147 @@ export default function DashBoard() {
 
     return (
         <>
-            <div className='main'>
-                {/* 정보 박스 영역 */}
-                <div className='info-box'>
-                    {/* ... 기존 info-detail-box 들 ... */}
-                    <div className='info-detail-box'>
-                        <div className={'div-1'}><div className={'today-earn-text'}>오늘 수익</div></div>
-                        <div className={'div-2'}><div className={'today-earn-text-2'}>2.45 ETH</div></div>
-                        <div className={'div-3'}><div className={'today-earn-text-3'}>₩4,890,000</div></div>
+            {viewMode === 'dashboard' ? (
+                <div className='main'>
+                    {/* 정보 박스 영역 */}
+                    <div className='info-box'>
+                        {/* ... 기존 info-detail-box 들 ... */}
+                        <div className='info-detail-box'>
+                            <div className={'div-1'}><div className={'today-earn-text'}>오늘 수익</div></div>
+                            <div className={'div-2'}><div className={'today-earn-text-2'}>2.45 ETH</div></div>
+                            <div className={'div-3'}><div className={'today-earn-text-3'}>₩4,890,000</div></div>
+                        </div>
+                        <div className='info-detail-box'>
+                            <div className={'div-1'}><div className={'total-sell-text'}>누적 판매량</div></div>
+                            <div className={'div-2'}><div className={'total-sell-text-2'}>1,234</div></div>
+                            <div className={'div-3'}><div className={'total-sell-text-3'}>+12.5%</div></div>
+                        </div>
+                        <div className='info-detail-box'>
+                            <div className={'div-1'}><div className={'amount-token-text'}>보유 토큰</div></div>
+                            <div className={'div-2'}><div className={'amount-token-text-2'}>{balance.toFixed(2)} SOL</div></div>
+                            <div className={'div-3'}><div className={'amount-token-text-3'}>₩{solPrice > 0 ? (balance * solPrice).toLocaleString() : '...'}</div></div>
+                        </div>
+                        <div className='info-detail-box'>
+                            <div className={'div-1'}><div className={'amount-token-text'}>오늘 트랜잭션 수</div></div>
+                            <div className={'div-2'}><div className={'amount-token-text-2'}>{todayTransactionCount} 건</div></div>
+                        </div>
                     </div>
-                    <div className='info-detail-box'>
-                        <div className={'div-1'}><div className={'total-sell-text'}>누적 판매량</div></div>
-                        <div className={'div-2'}><div className={'total-sell-text-2'}>1,234</div></div>
-                        <div className={'div-3'}><div className={'total-sell-text-3'}>+12.5%</div></div>
-                    </div>
-                    <div className='info-detail-box'>
-                        <div className={'div-1'}><div className={'amount-token-text'}>보유 토큰</div></div>
-                        <div className={'div-2'}><div className={'amount-token-text-2'}>{balance.toFixed(2)} SOL</div></div>
-                        <div className={'div-3'}><div className={'amount-token-text-3'}>₩{solPrice > 0 ? (balance * solPrice).toLocaleString() : '...'}</div></div>
-                    </div>
-                    <div className='info-detail-box'>
-                        <div className={'div-1'}><div className={'amount-token-text'}>오늘 트랜잭션 수</div></div>
-                        <div className={'div-2'}><div className={'amount-token-text-2'}>{todayTransactionCount} 건</div></div>
-                    </div>
-                </div>
 
 
-                <div className='content-row'> {/* 차트와 트랜잭션 목록을 담는 행 */}
-                    {/* 토큰 시세 차트 */}
-                    <div className='chart-box'> {/* 차트 전체 박스 */}
-                        <h3 className='chart-title'>토큰 시세</h3> {/* 제목 */}
-                        <div className='chart-container'> {/* 차트 캔버스 컨테이너 */}
-                            {loadingChart && <div className="loading-placeholder"><span>차트 로딩 중...</span></div>}
-                            {chartError && <div className="error-placeholder"><span>{chartError}</span></div>}
-                            {/* chartData가 null이 아닐 때만 Line 렌더링 */}
-                            {!loadingChart && !chartError && chartData && (
-                                <Line options={chartOptions} data={chartData} />
+                    <div className='content-row'> {/* 차트와 트랜잭션 목록을 담는 행 */}
+                        {/* 토큰 시세 차트 */}
+                        <div className='chart-box'> {/* 차트 전체 박스 */}
+                            <h3 className='chart-title'>토큰 시세</h3> {/* 제목 */}
+                            <div className='chart-container'> {/* 차트 캔버스 컨테이너 */}
+                                {loadingChart && <div className="loading-placeholder"><span>차트 로딩 중...</span></div>}
+                                {chartError && <div className="error-placeholder"><span>{chartError}</span></div>}
+                                {/* chartData가 null이 아닐 때만 Line 렌더링 */}
+                                {!loadingChart && !chartError && chartData && (
+                                    <Line options={chartOptions} data={chartData} />
+                                )}
+                            </div>
+                        </div>
+                        {/* 최근 트랜잭션 목록 (이전 답변 참고하여 추가) */}
+                        <div className='transaction-list-box'>
+                            <h3 className='transaction-title'>최근 트랜잭션</h3>
+                            {transactions.length > 0 ? (
+                                <ul className='transaction-list'>
+                                    {transactions.map((tx, index) => (
+                                        <li key={tx?.transaction.signatures[0] || index} className="transaction-item">
+                                            <div className="tx-signature">
+                                                Sig: {tx?.transaction.signatures[0] ? `${tx.transaction.signatures[0].substring(0, 10)}...${tx.transaction.signatures[0].substring(tx.transaction.signatures[0].length - 5)}` : 'N/A'}
+                                            </div>
+                                            <div className="tx-time">
+                                                Time: {tx?.blockTime ? new Date(tx.blockTime * 1000).toLocaleTimeString('ko-KR') : 'N/A'}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="no-transactions">최근 트랜잭션이 없습니다.</p>
                             )}
                         </div>
                     </div>
-                    {/* 최근 트랜잭션 목록 (이전 답변 참고하여 추가) */}
-                    <div className='transaction-list-box'>
-                        <h3 className='transaction-title'>최근 트랜잭션</h3>
-                        {transactions.length > 0 ? (
-                            <ul className='transaction-list'>
-                                {transactions.map((tx, index) => (
-                                    <li key={tx?.transaction.signatures[0] || index} className="transaction-item">
-                                        <div className="tx-signature">
-                                            Sig: {tx?.transaction.signatures[0] ? `${tx.transaction.signatures[0].substring(0, 10)}...${tx.transaction.signatures[0].substring(tx.transaction.signatures[0].length - 5)}` : 'N/A'}
-                                        </div>
-                                        <div className="tx-time">
-                                            Time: {tx?.blockTime ? new Date(tx.blockTime * 1000).toLocaleTimeString('ko-KR') : 'N/A'}
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="no-transactions">최근 트랜잭션이 없습니다.</p>
-                        )}
-                    </div>
-                </div>
 
-                <div className='recent-order-view-box'>
-                    <div className='recent-orders'>
-                        <div className='recent-orders__header'>
-                            <h3 className='recent-orders__title-wrapper'>
-                                <span className='recent-orders__title'>최근 주문</span>
-                            </h3>
-                        </div>
-                        <div className='recent-orders__content'>
-                            <div className='recent-orders__table'>
-                                <div className='recent-orders__thead'>
-                                    <div className='recent-orders__row recent-orders__row--header'>
-                                        <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--buyer'>
-                                            <span className='recent-orders__header-text'>구매자</span>
-                                        </div>
-                                        <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--product'>
-                                            <span className='recent-orders__header-text'>상품명</span>
-                                        </div>
-                                        <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--quantity'>
-                                            <span className='recent-orders__header-text'>수량</span>
-                                        </div>
-                                        <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--amount'>
-                                            <span className='recent-orders__header-text'>결제금액</span>
-                                        </div>
-                                        <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--status'>
-                                            <span className='recent-orders__header-text'>상태</span>
+                    <div className='recent-order-view-box'>
+                        <div className='recent-orders'>
+                            <div className='recent-orders__header'>
+                                <h3 className='recent-orders__title-wrapper'>
+                                    <span className='recent-orders__title'>최근 주문</span>
+                                </h3>
+                            </div>
+                            <div className='recent-orders__content'>
+                                <div className='recent-orders__table'>
+                                    <div className='recent-orders__thead'>
+                                        <div className='recent-orders__row recent-orders__row--header'>
+                                            <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--buyer'>
+                                                <span className='recent-orders__header-text'>구매자</span>
+                                            </div>
+                                            <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--product'>
+                                                <span className='recent-orders__header-text'>상품명</span>
+                                            </div>
+                                            <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--quantity'>
+                                                <span className='recent-orders__header-text'>수량</span>
+                                            </div>
+                                            <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--amount'>
+                                                <span className='recent-orders__header-text'>결제금액</span>
+                                            </div>
+                                            <div className='recent-orders__cell recent-orders__cell--header recent-orders__cell--status'>
+                                                <span className='recent-orders__header-text'>상태</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className='recent-orders__tbody'>
-                                    {orders.length === 0 ? (
-                                        <div className="recent-orders__row recent-orders__row--empty">
-                                            <div className="recent-orders__cell recent-orders__cell--empty" role="cell" aria-colspan={5}>
-                                                최근 주문 내역이 없습니다.
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        orders.map((order) => (
-                                            <div className='recent-orders__row' key={order.id}>
-                                                <div className='recent-orders__cell recent-orders__cell--buyer'>
-                                                    <span className='recent-orders__cell-content'>{order.buyer}</span>
-                                                </div>
-                                                <div className='recent-orders__cell recent-orders__cell--product'>
-                                                    <span className='recent-orders__cell-content'>{order.productName}</span>
-                                                </div>
-                                                <div className='recent-orders__cell recent-orders__cell--quantity'>
-                                                    <span className='recent-orders__cell-content'>{order.quantity}</span>
-                                                </div>
-                                                <div className='recent-orders__cell recent-orders__cell--amount'>
-                                                    <span className='recent-orders__cell-content'>{order.amount}</span>
-                                                </div>
-                                                <div className='recent-orders__cell recent-orders__cell--status'>
-                                                    <span className={`recent-orders__status-badge status-${order.status === '완료' ? 'completed' : order.status === '진행중' ? 'pending' : 'cancelled'}`}>
-                                                        <span className='recent-orders__status-text'>{order.status}</span>
-                                                    </span>
+                                    <div className='recent-orders__tbody'>
+                                        {orders.length === 0 ? (
+                                            <div className="recent-orders__row recent-orders__row--empty">
+                                                <div className="recent-orders__cell recent-orders__cell--empty" role="cell" aria-colspan={5}>
+                                                    최근 주문 내역이 없습니다.
                                                 </div>
                                             </div>
-                                        ))
-                                    )}
+                                        ) : (
+                                            orders.map((order) => (
+                                                <div className='recent-orders__row' key={order.id}>
+                                                    <div className='recent-orders__cell recent-orders__cell--buyer'>
+                                                        <span className='recent-orders__cell-content'>{order.buyer}</span>
+                                                    </div>
+                                                    <div className='recent-orders__cell recent-orders__cell--product'>
+                                                        <span className='recent-orders__cell-content'>{order.productName}</span>
+                                                    </div>
+                                                    <div className='recent-orders__cell recent-orders__cell--quantity'>
+                                                        <span className='recent-orders__cell-content'>{order.quantity}</span>
+                                                    </div>
+                                                    <div className='recent-orders__cell recent-orders__cell--amount'>
+                                                        <span className='recent-orders__cell-content'>{order.amount}</span>
+                                                    </div>
+                                                    <div className='recent-orders__cell recent-orders__cell--status'>
+                                                        <span className={`recent-orders__status-badge status-${order.status === '완료' ? 'completed' : order.status === '진행중' ? 'pending' : 'cancelled'}`}>
+                                                            <span className='recent-orders__status-text'>{order.status}</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className='additional-options-box'>
-                    <div className={'view-report-button'}>
-                        <div className={'text---'}>
-                            정산 내역 보기
+                    <div className='additional-options-box'>
+                        <div className={'view-report-button'}>
+                            <div className={'text---'}>
+                                정산 내역 보기
+                            </div>
+                        </div>
+                        <div className={'add-new-product-button'} onClick={showRegistrationForm}>
+                            <div className={'text--'}>
+                                신상품 등록하기
+                            </div>
                         </div>
                     </div>
-                    <div className={'add-new-product-button'}>
-                        <div className={'text--'}>
-                            신상품 등록하기
-                        </div>
-                    </div>
                 </div>
-            </div>
+            ) : (
+                <ProductRegistrationForm onBack={showDashboard} />
+            )}
         </>
     );
 }
