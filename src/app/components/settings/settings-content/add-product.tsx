@@ -2,14 +2,13 @@
 import React, { JSX, useCallback, useEffect, useState } from 'react';
 import './css/add-product.css'; // CSS 파일 경로
 import { useWallet } from '@solana/wallet-adapter-react';
-import nacl from 'tweetnacl';
 interface ProductRegistrationFormProps {
     onBack: () => void; // 대시보드로 돌아가기 함수
 }
 
 const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBack }): JSX.Element => {
     // 폼 입력 값 상태 관리
-    const { publicKey, signMessage } = useWallet();
+    const { publicKey } = useWallet();
     const [productName, setProductName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState<number>(0); // 숫자 또는 빈 문자열
@@ -34,25 +33,6 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
         });
         // 여기서 API 호출 로직 구현
         // 셀러 등록
-
-        if (!publicKey) {
-            alert('공개 키를 사용할 수 없습니다. 지갑을 연결해주세요.');
-            return;
-        }
-        const messageBytes = new TextEncoder().encode('리셀러 등록');
-        if (!signMessage) {
-            alert('signMessage를 사용할 수 없습니다. 지갑을 연결해주세요.');
-            return;
-        }
-        const signatureBytes = await signMessage(messageBytes);
-        // Convert publicKey to Uint8Array using .toBytes()
-        const publicKeyBytes = publicKey.toBytes();
-        const isSignatureValid = nacl.sign.detached.verify(messageBytes, signatureBytes, publicKeyBytes);
-
-        if (!isSignatureValid) {
-            alert('서명 확인에 실패했습니다.');
-            return;
-        }
         
         await fetch('/api/generate/seller-token', {
             method: 'POST',
@@ -61,8 +41,6 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onBac
             },
             body: JSON.stringify({
                 walletAddress: sellerwallet,
-                message: '리셀러 등록',
-                signature: isSignatureValid
             }),
         }).then((response) => {
             console.log('Seller Generate Response:', response);
