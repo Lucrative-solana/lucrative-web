@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import './css/side-panel.css'
-import { useRouter } from 'next/navigation';
 
 interface SidePanelProps {
     setContent: (content: number) => void;
@@ -9,7 +8,6 @@ interface SidePanelProps {
 
 export default function SidePanel({ setContent }: SidePanelProps) {
     const [selmenu, setSelmenu] = useState(0);
-    const router = useRouter();
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
