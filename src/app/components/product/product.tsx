@@ -128,6 +128,30 @@ export default function ProductDetailPage() {
         }
     };
 
+    const buysendwidhraw = async () => {
+        if (!publicKey) {
+            console.error("Public key is null");
+            return;
+        }
+        try {
+            const mywallet = publicKey;
+            const recipient = new PublicKey(product.walletAddress); // 판매자 지갑 주소
+            const lamports = widhrawAmount * 1e9; // 0.01 SOL in lamports
+            const transaction = new Transaction().add(
+                SystemProgram.transfer({
+                    fromPubkey: mywallet,
+                    toPubkey: recipient,
+                    lamports,
+                })
+            )
+
+            const signature = await sendTransaction(transaction, connection);
+            console.log('Transaction signature:', signature);
+            return true;
+        } catch (error) {
+            console.error("Error sending transaction:", error);
+        }
+    }
 
     // 결제 로직
     const onSubmit = async () => {
@@ -156,9 +180,9 @@ export default function ProductDetailPage() {
             const amountInLamports = Math.floor(amountInSol * LAMPORTS_PER_SOL); // Lamport는 정수여야 함
 
             if (amountInLamports <= 0) {
-                 alert('결제 금액이 너무 작습니다.');
-                 setIsProcessingPayment(false);
-                 return;
+                alert('결제 금액이 너무 작습니다.');
+                setIsProcessingPayment(false);
+                return;
             }
 
             // 3. 사용자 확인
@@ -168,10 +192,13 @@ export default function ProductDetailPage() {
                 `수량: ${selectedQuantity}개\n` +
                 `결제 금액 (KRW): ₩${formatPrice(totalPrice)}\n` +
                 `결제 금액 (SOL): ${formatSol(amountInSol)} SOL\n` + // 변환된 SOL 표시
+                `결제 금액 (sol): ${amountInSol}\n` +
+                '결제 금액 (Lamports): ' + amountInLamports + ' Lamports\n' +
                 `판매자 주소: ${sellerwallet}\n\n` +
                 '솔라나 네트워크 트랜잭션을 진행합니다.\n' +
                 '진행하시려면 "확인"을, 취소하시려면 "취소"를 눌러주세요.'
             );
+            setWithdrawAmount(amountInLamports)
 
             if (!confirmWithdraw) {
                 alert('결제가 취소되었습니다.');
@@ -179,81 +206,59 @@ export default function ProductDetailPage() {
                 return;
             }
 
-            const buysendwidhraw = async () => {
-                if (!publicKey) {
-                console.error("Public key is null");
-                return;
-            }
-            try {
-            const mywallet = publicKey;
-            const recipient = new PublicKey(widhrawAddress);
-            const lamports = widhrawAmount * 1e9; // 0.01 SOL in lamports
-    
-            const transaction = new Transaction().add(
-                SystemProgram.transfer({
-                    fromPubkey: mywallet,
-                    toPubkey: recipient,
-                    lamports,
-                })
-            )
-
-            const signature = await sendTransaction(transaction, connection);
-            console.log('Transaction signature:', signature);
-            return true;
-        } catch (error) {
-            console.error("Error sending transaction:", error);
-        }
-    }
-
-
             // 4. Solana 트랜잭션 실행
             alert('Solana 지갑으로 트랜잭션을 전송합니다...');
-            const signature = await buysendwidhraw();
-
-            // 5. 트랜잭션 성공 후 백엔드 API 호출
-            alert(`송금이 완료되었습니다! 트랜잭션 ID: ${signature}\n서버에 거래 내역을 기록합니다.`);
-
-            // 백엔드에 기록 (실패해도 일단 SOL 전송은 성공한 상태)
-            try {
-                const backendResponse = await fetch('/api/dev/widhdraw', { // 'withdraw'로 오타 수정 권장
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        buyer: publicKey.toString(),
-                        seller: sellerwallet, // 실제 판매자 주소
-                        itemId: product.id,
-                        itemName: product.name,
-                        itemDescription: product.description,
-                        quantity: selectedQuantity,
-                    }),
-                });
-
-                if (!backendResponse.ok) {
-                    // 백엔드 기록 실패 시 사용자에게 알림 (하지만 SOL은 이미 전송됨)
-                    const errorData = await backendResponse.text();
-                    console.error('백엔드 기록 실패:', backendResponse.status, errorData);
-                    alert(`SOL 송금은 성공했으나 서버에 거래 내역 기록 중 오류가 발생했습니다. 관리자에게 문의하세요. (Tx: ${signature})`);
-                } else {
-                    console.log('백엔드 기록 성공:', await backendResponse.json());
-                    alert('구매 내역이 성공적으로 기록되었습니다.');
-                    // 구매 성공 후 처리 (예: 장바구니 비우기, 감사 페이지 이동 등)
-                }
-            } catch (backendError) {
-                 console.error("백엔드 API 호출 오류:", backendError);
-                 alert(`SOL 송금은 성공했으나 서버에 거래 내역 기록 중 네트워크 오류가 발생했습니다. 관리자에게 문의하세요. (Tx: ${signature})`);
+            const transactionResult = await buysendwidhraw();
+            if (!transactionResult) {
+                alert('트랜잭션 전송에 실패했습니다. 다시 시도해주세요.');
+                setIsProcessingPayment(false);
+                return;
             }
+            else {
+                // 5. 트랜잭션 성공 후 백엔드 API 호출
+                alert(`송금이 완료되었습니다! 트랜잭션 결과: ${transactionResult}\n서버에 거래 내역을 기록합니다.`);
 
+                // 백엔드에 기록 (실패해도 일단 SOL 전송은 성공한 상태)
+                try {
+                    const backendResponse = await fetch('/api/dev/widhdraw', { // 'withdraw'로 오타 수정 권장
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            buyer: publicKey.toString(),
+                            seller: sellerwallet, // 실제 판매자 주소
+                            amountInSol: Number(formatSol(amountInSol)), // SOL 금액
+                            itemId: product.id,
+                            itemName: product.name,
+                            itemDescription: product.description,
+                        }),
+                    });
+
+                    if (!backendResponse.ok) {
+                        // 백엔드 기록 실패 시 사용자에게 알림 (하지만 SOL은 이미 전송됨)
+                        const errorData = await backendResponse.text();
+                        console.error('백엔드 기록 실패:', backendResponse.status, errorData);
+                        alert(`SOL 송금은 성공했으나 서버에 거래 내역 기록 중 오류가 발생했습니다. 관리자에게 문의하세요. (Tx: ${signature})`);
+                    } else {
+                        console.log('백엔드 기록 성공:', await backendResponse.json());
+                        alert('구매 내역이 성공적으로 기록되었습니다.');
+                        // 구매 성공 후 처리 (예: 장바구니 비우기, 감사 페이지 이동 등)
+                    }
+                } catch (backendError) {
+                    console.error("백엔드 API 호출 오류:", backendError);
+                    alert(`SOL 송금은 성공했으나 서버에 거래 내역 기록 중 네트워크 오류가 발생했습니다. 관리자에게 문의하세요. (Tx: ${signature})`);
+                }
+            }
         } catch (err) {
             console.error("결제 프로세스 오류:", err);
             // sendSolTransaction에서 던진 오류 처리 포함
             if (err instanceof SendTransactionError) {
-                 alert(`Solana 트랜잭션 전송 실패: ${err.message}`);
+                alert(`Solana 트랜잭션 전송 실패: ${err.message}`);
             } else if (err instanceof Error) {
-                 alert(`결제 중 오류 발생: ${err.message}`);
+                alert(`결제 중 오류 발생: ${err.message}`);
             } else {
-                 alert('알 수 없는 오류로 결제에 실패했습니다.');
+                alert('알 수 없는 오류로 결제에 실패했습니다.');
             }
         } finally {
             setIsProcessingPayment(false); // 결제 종료 표시
