@@ -5,15 +5,12 @@
   --foreground: #171717;
 }
 
-html, body, div {
-  height: 100%;
+html, body {
+  background-color: white;
   margin: 0; /* body의 기본 마진 제거 */
   padding: 0; /* 기본 패딩 제거 */
 }
-/* Next.js의 경우 __next 루트 요소에도 필요할 수 있음 */
-#__next {
-  height: 100%;
-}
+
 
 @theme inline {
   --color-background: var(--background);
