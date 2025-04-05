@@ -1,3 +1,4 @@
+/* --- 기존 CSS 코드 --- */
 .header {
     position: fixed; /* absolute 대신 fixed 사용 - 스크롤 시에도 상단에 고정 */
     top: 0;
@@ -9,7 +10,7 @@
     border-style: solid;
     border-color: #E5E7EB;
     z-index: 1000; /* 다른 요소 위에 표시되도록 */
-    
+
     .nav {
         position: relative; /* absolute 대신 relative 사용 */
         width: 100%;
@@ -30,20 +31,20 @@
             justify-content: space-between;
             align-items: center;
             background: rgba(0, 0, 0, 0);
-            
+
             .div-1 {
                 position: relative; /* absolute 대신 relative 사용 */
                 display: flex;
                 align-items: center;
                 background: rgba(0, 0, 0, 0);
-                
+
                 .a {
                     position: relative; /* absolute 대신 relative 사용 */
                     width: 32px;
                     height: 32px;
                     margin-right: 32px; /* 로고와 메뉴 사이 간격 */
                     background: rgba(0, 0, 0, 0);
-                    
+
                     .img {
                         width: 100%;
                         height: 100%;
@@ -52,35 +53,67 @@
                         background-size: cover;
                     }
                 }
-                
+
                 .div-2 {
                     position: relative; /* absolute 대신 relative 사용 */
                     display: flex;
                     align-items: center;
                     gap: 32px; /* 메뉴 항목 사이 간격 */
                     background: rgba(0, 0, 0, 0);
+
+                    /* --- 수정된 부분 --- */
                     .a-1, .a-2, .a-3, .a-4 {
                         position: relative; /* absolute 대신 relative 사용 */
                         display: flex;
-                        padding: 4px 4px 0px 4px;
+                        /* padding: 4px 4px 0px 4px; 기존 패딩 */
+                        padding: 4px 4px 2px 4px; /* 아래쪽 패딩 추가하여 공간 확보 */
                         background: rgba(0, 0, 0, 0);
                         cursor: pointer;
+                        overflow: hidden; /* ::after 요소가 넘치지 않도록 */
                     }
-                    
+
+                    /* ::after 가상 요소를 사용하여 밑줄 생성 */
+                    .a-1::after,
+                    .a-2::after,
+                    .a-3::after,
+                    .a-4::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0; /* 아래쪽에 배치 */
+                        left: 0;
+                        width: 100%; /* 너비는 부모 요소와 같게 */
+                        height: 2px; /* 밑줄 두께 */
+                        background-color: #000000; /* 검은색 밑줄 */
+                        transform: scaleX(0); /* 초기 상태: 너비 0 (숨김) */
+                        transform-origin: left; /* 왼쪽에서 오른쪽으로 나타나는 효과 */
+                        transition: transform 0.3s ease-in-out; /* 부드러운 애니메이션 효과 */
+                    }
+
+                    /* hover 시 ::after 요소의 너비를 100%로 변경 */
+                    .a-1:hover::after,
+                    .a-2:hover::after,
+                    .a-3:hover::after,
+                    .a-4:hover::after {
+                        transform: scaleX(1); /* hover 시 너비 100% (보이게) */
+                    }
+
+                    /* 기존 .a-1의 border 제거 */
                     .a-1 {
-                        border-width: 0px 0px 2px 0px;
-                        border-style: solid;
-                        border-color: #000000;
-                        
+                        /* border-width: 0px 0px 2px 0px; 제거 */
+                        /* border-style: solid; 제거 */
+                        /* border-color: #000000; 제거 */
+
                         .text- {
-                            color: #000000;
+                            color: #000000; /* 활성 메뉴 텍스트 색상 (필요시 유지 또는 수정) */
                             font-family: "Roboto";
                             font-size: 14px;
                             line-height: 20px;
                             font-weight: 500;
                         }
                     }
-                    
+
+                    /* --- 수정 끝 --- */
+
                     .a-2 .text--1,
                     .a-3 .text--2,
                     .a-4 .text--3 {
@@ -90,29 +123,38 @@
                         line-height: 20px;
                         font-weight: 500;
                     }
+
+                    /* hover 시 텍스트 색상 변경 (선택 사항) */
+                    .a-1:hover .text-,
+                    .a-2:hover .text--1,
+                    .a-3:hover .text--2,
+                    .a-4:hover .text--3 {
+                        color: #000000; /* hover 시 텍스트 색상을 검은색으로 */
+                    }
                 }
             }
-            
+
             .div-3 {
                 position: relative; /* absolute 대신 relative 사용 */
                 display: flex;
                 align-items: center;
                 background: rgba(0, 0, 0, 0);
-                
-                .button {
+
+                .button { /* 이 클래스는 WalletMultiButtonComponent에는 직접 적용되지 않습니다. */
+                          /* WalletMultiButtonComponent 스타일은 React 코드 내 style prop으로 제어됩니다. */
                     position: relative; /* absolute 대신 relative 사용 */
                     display: flex;
                     align-items: center;
                     padding: 8px 16px;
                     border-radius: 4px;
                     background: #000000;
-                    
+
                     .svg {
                         width: 14px;
                         height: 14px;
                         margin-right: 9px;
                     }
-                    
+
                     .text-- {
                         color: #FFFFFF;
                         font-family: "Roboto";
@@ -131,18 +173,17 @@
     .header {
         .nav {
             padding: 0 16px;
-            
+
             .div {
                 .div-1 {
                     .div-2 {
                         gap: 16px; /* 작은 화면에서 메뉴 간격 줄임 */
                     }
                 }
-                
+
                 .div-3 {
-                    .button {
-                        padding: 6px 12px; /* 버튼 크기 줄임 */
-                    }
+                    /* .button 스타일은 WalletMultiButtonComponent에 직접 적용되지 않으므로 */
+                    /* 필요하다면 React 코드 내 style prop을 반응형으로 조정해야 합니다. */
                 }
             }
         }
@@ -154,25 +195,22 @@
     .header {
         .nav {
             padding: 0 12px;
-            
+
             .div {
                 .div-1 {
                     .div-2 {
                         display: none; /* 모바일에서 메뉴 숨김 */
                     }
                 }
-                
+
                 .div-3 {
-                    .button {
-                        .text-- {
-                            font-size: 12px; /* 작은 화면에서 폰트 크기 줄임 */
-                        }
-                    }
+                     /* .button 스타일은 WalletMultiButtonComponent에 직접 적용되지 않으므로 */
+                     /* 필요하다면 React 코드 내 style prop을 반응형으로 조정해야 합니다. */
                 }
             }
         }
     }
-    
+
     /* 모바일용 햄버거 메뉴 버튼 (필요시 구현) */
     .mobile-menu-button {
         display: block;

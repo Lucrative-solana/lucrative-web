@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import './css/side-panel.css'
+import { useRouter } from 'next/navigation';
 
 interface SidePanelProps {
     setContent: (content: number) => void;
@@ -8,6 +9,7 @@ interface SidePanelProps {
 
 export default function SidePanel({ setContent }: SidePanelProps) {
     const [selmenu, setSelmenu] = useState(0);
+    const router = useRouter();
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
@@ -36,7 +38,7 @@ export default function SidePanel({ setContent }: SidePanelProps) {
     return (
         <>
             <div className='aside'>
-                <div className='div'>
+                <div className='div' onClick={() => window.location.href = '/'}>
                     <div className='LOGO'>
                         LUCRATIVE
                     </div>

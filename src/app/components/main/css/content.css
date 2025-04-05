@@ -1,11 +1,353 @@
-.content {
-    position: fixed;
+.landing-content-wrapper {
+    width: 100%;
+    /* flex: 1; */ /* <<< 만약 부모 레이아웃(헤더+컨텐츠)이 display:flex, flex-direction:column 이라면, 이 속성으로 남은 세로 공간을 채웁니다. */
+    min-height: calc(100vh - var(--header-height, 65px)); /* <<< 헤더 높이를 제외한 최소 뷰포트 높이 (헤더 높이 변수 필요) */
+    display: flex; /* 내부 landing-content를 정렬하기 위해 flex 사용 */
+    flex-direction: column; /* 자식 요소를 세로로 쌓음 (여기선 하나지만) */
+    align-items: center; /* <<< 자식 요소(landing-content)를 수평 중앙 정렬 */
+    padding: 2rem 0; /* 위아래 여백 (좌우 패딩은 landing-content 에서) */
+    box-sizing: border-box;
+    background-color: var(--color-slate-100, #F9FAFB); /* <<< 전체 배경색 설정 */
+}
+
+
+.landing-content {
+    display: flex;
+    width: 100%;
+    max-width: 1440px; /* 디자인 최대 너비 */
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 2rem; /* 좌우 패딩 (Figma 32px) */
+    box-sizing: border-box;
+    font-family: var(--font-family-base, "Roboto", sans-serif);
+    background-color: var(--color-slate-100, #F9FAFB); /* 전체 배경색 */
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* 섹션 간 기본 간격 */
+}
+
+/* --- Hero/Carousel 섹션 --- */
+.landing-content__hero-section {
+    width: 100%;
+    margin-bottom: 1rem; /* 아래 필터와의 간격 */
+}
+
+.landing-content__hero-banner {
+    position: relative; /* 오버레이 위치 기준 */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--color-slate-300, #cbd5e1); /* 이미지 로딩 전 배경 */
+    min-height: 400px; /* 최소 높이 */
+    display: flex;
+    align-items: center; /* 기본 세로 중앙 정렬 */
+}
+
+.hero-banner__image {
+    display: block;
     width: 100%;
     height: 100%;
-    margin: 0 auto; /* 중앙 정렬 */
+    object-fit: cover; /* 이미지 비율 유지하며 채움 */
+    position: absolute; /* 배경처럼 깔기 */
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.hero-banner__overlay {
+    position: relative; /* 컨텐츠 z-index 위로 */
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 60%); /* 왼쪽 어둡게 (Figma 참고) */
     display: flex;
-    flex-direction: column; /* column에서 row로 변경 */
-    justify-content: center;
     align-items: center;
-    background: white;
+    padding: 2rem 3rem; /* 좌우 패딩 */
+}
+
+.hero-banner__content {
+    color: var(--color-white, #ffffff);
+    max-width: 50%; /* 컨텐츠 너비 제한 */
+}
+
+.hero-banner__tag {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 500; /* font-medium */
+    margin-bottom: 0.5rem;
+}
+
+.hero-banner__title {
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 700; /* font-bold */
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-banner__description {
+    font-size: 1.25rem; /* text-xl */
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+/* Hero 버튼 스타일 (기본 버튼 스타일 활용) */
+.hero-banner__content .btn { /* 좀 더 구체적인 선택자 */
+    padding: 0.75rem 1.5rem; /* py-3 px-6 */
+    font-size: 1rem;
+    font-weight: 500;
+}
+.btn-outline { /* 흰색 테두리 버튼 예시 */
+    background-color: transparent;
+    border: 1px solid var(--color-white, #ffffff);
+    color: var(--color-white, #ffffff);
+}
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+/* --- 필터 섹션 --- */
+.landing-content__filters {
+    display: flex;
+    flex-wrap: wrap; /* 작은 화면에서 줄바꿈 */
+    gap: 1rem; /* 요소 간 간격 */
+    align-items: center;
+    margin-bottom: 1rem; /* 아래 상품 그리드와의 간격 */
+}
+
+.filters__group {
+    display: flex;
+    gap: 0.5rem; /* 내부 아이템 간격 */
+    align-items: center;
+}
+
+/* 스크린리더 전용 클래스 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+.filters__select {
+    padding: 0.5rem 2rem 0.5rem 0.75rem; /* py-2 pl-3 pr-8 */
+    font-size: 0.875rem; /* text-sm */
+    border: 1px solid var(--color-slate-300, #cbd5e1);
+    border-radius: 4px;
+    background-color: var(--color-white, #ffffff);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); /* Tailwind 기본 화살표 */
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    appearance: none; /* 기본 브라우저 스타일 제거 */
+    cursor: pointer;
+}
+
+.filters__button {
+    display: inline-flex; /* 아이콘과 텍스트 정렬 */
+    align-items: center;
+    gap: 0.375rem; /* 아이콘과 텍스트 간격 */
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    border: 1px solid var(--color-slate-300, #cbd5e1);
+    border-radius: 4px;
+    background-color: var(--color-white, #ffffff);
+    color: var(--color-slate-700, #334155);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.filters__button svg { /* 아이콘 스타일 (예시) */
+     width: 1rem;
+     height: 1rem;
+     fill: currentColor;
+}
+
+.filters__button:hover {
+    background-color: var(--color-slate-50, #f8fafc);
+}
+
+.filters__button.active { /* 활성 상태 스타일 */
+    background-color: var(--color-slate-900, #0f172a);
+    border-color: var(--color-slate-900, #0f172a);
+    color: var(--color-white, #ffffff);
+}
+
+/* --- 상품 그리드 섹션 --- */
+.landing-content__product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 반응형 그리드 */
+    gap: 1.5rem; /* 카드 간격 */
+}
+
+.product-card {
+    background-color: var(--color-white, #ffffff);
+    border-radius: 8px;
+    overflow: hidden; /* 이미지 넘침 방지 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.product-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 비율 (이미지 크기에 따라 조절) */
+    background-color: var(--color-slate-200, #e2e8f0); /* 이미지 로딩 전 배경 */
+}
+
+.product-card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-card__discount-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background-color: var(--color-red-500, #ef4444); /* 할인 뱃지 색상 */
+    color: var(--color-white, #ffffff);
+    padding: 0.25rem 0.5rem; /* py-1 px-2 */
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.product-card__info {
+    padding: 1rem; /* p-4 */
+}
+
+.product-card__name {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 500; /* font-medium */
+    color: var(--color-slate-900, #0f172a);
+    margin: 0 0 0.5rem 0; /* 이름 아래 여백 */
+    white-space: nowrap; /* 이름 한 줄 표시 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card__price {
+    display: flex;
+    align-items: baseline; /* 가격 정렬 */
+    gap: 0.5rem; /* 가격 사이 간격 */
+}
+
+.product-card__price--original {
+    font-size: 0.875rem; /* text-sm */
+    color: var(--color-slate-500, #64748b);
+    text-decoration: line-through;
+}
+
+.product-card__price--final {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 700; /* font-bold */
+    color: var(--color-slate-900, #0f172a);
+}
+
+/* --- Add-on 프로토콜 배너 --- */
+.landing-content__addon-banner {
+    background-color: var(--color-white, #ffffff);
+    border-radius: 8px;
+    padding: 2rem; /* p-8 */
+    text-align: center;
+    margin-top: 1.5rem; /* 위 그리드와의 간격 추가 */
+}
+
+.addon-banner__content {
+    max-width: 768px; /* 내용 최대 너비 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
+
+.addon-banner__title {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 700; /* font-bold */
+    color: var(--color-slate-900, #0f172a);
+    margin-bottom: 1rem;
+}
+
+.addon-banner__description {
+    font-size: 1rem; /* text-base */
+    color: var(--color-slate-600, #475569);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.addon-banner__content .btn { /* 버튼 스타일 */
+    display: inline-flex; /* 아이콘 정렬 */
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-dark { /* 검정 배경 버튼 예시 */
+    background-color: var(--color-slate-900, #0f172a);
+    color: var(--color-white, #ffffff);
+    border: 1px solid var(--color-slate-900, #0f172a);
+}
+.btn-dark:hover {
+    background-color: var(--color-slate-700, #334155);
+    border-color: var(--color-slate-700, #334155);
+}
+.addon-banner__content .btn svg { /* 아이콘 스타일 */
+     width: 1.25rem; /* 아이콘 크기 */
+     height: 1.25rem;
+}
+
+
+/* --- 반응형 조정 --- */
+@media (max-width: 767px) {
+    .landing-content {
+        padding: 1.5rem; /* 모바일 패딩 약간 줄임 */
+        gap: 2rem;
+    }
+    .hero-banner__overlay {
+        padding: 1.5rem;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 80%); /* 모바일 오버레이 조정 */
+    }
+    .hero-banner__content {
+        max-width: 80%;
+    }
+    .hero-banner__title {
+        font-size: 1.75rem; /* 모바일 제목 크기 */
+    }
+    .hero-banner__description {
+        font-size: 1rem; /* 모바일 설명 크기 */
+    }
+    .landing-content__filters {
+        flex-direction: column; /* 필터 세로 정렬 */
+        align-items: stretch; /* 필터 너비 꽉차게 */
+    }
+    .filters__group--sort {
+        justify-content: space-around; /* 정렬 버튼 간격 */
+    }
+    .landing-content__product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* 모바일 카드 최소 너비 조정 */
+        gap: 1rem; /* 모바일 카드 간격 */
+    }
+    .landing-content__addon-banner {
+        padding: 1.5rem;
+    }
+    .addon-banner__title {
+        font-size: 1.25rem;
+    }
+    .addon-banner__description {
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+     .landing-content__product-grid {
+        grid-template-columns: repeat(1, 1fr); /* 가장 작은 화면 1열 */
+    }
+     .product-card__name { font-size: 1rem; }
+     .product-card__price--final { font-size: 1.125rem; }
 }

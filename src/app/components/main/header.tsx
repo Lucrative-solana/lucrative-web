@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import './css/header.css';
+import { useRouter } from 'next/navigation';
 
 const WalletMultiButtonComponent = React.lazy(() =>
     import('@solana/wallet-adapter-react-ui').then((module) => ({
@@ -10,6 +11,8 @@ const WalletMultiButtonComponent = React.lazy(() =>
 
 export default function Main_Header() {
     const [isClient, setIsClient] = useState(false);
+    const router = useRouter();
+
 
     useEffect(() => {
         setIsClient(true);
@@ -30,11 +33,8 @@ export default function Main_Header() {
                             <div className={'a-2'}>
                                 <div className={'text--1'}>상품</div>
                             </div>
-                            <div className={'a-3'}>
+                            <div className={'a-3'} onClick={() => router.push('/settings')} >
                                 <div className={'text--2'}>마이페이지</div>
-                            </div>
-                            <div className={'a-4'}>
-                                <div className={'text--3'}>판매자</div>
                             </div>
                         </div>
                     </div>
